@@ -83,12 +83,7 @@ int main() {
 	
 	//cargamos los shader
 	glEnable(GL_DEPTH_TEST);
-//	Shader LightShader("./src/LightVertex.vertexshader", "./src/LightFragment.fragmentshader");
 	Shader ReceiveShader("./src/ReceiveVertex.vertexshader", "./src/ReceiveFragment.fragmentshader");
-	
-//	Shader DireccionShader("./src/DirVertex.vertexshader", "./src/DirFragment.fragmentshader");
-//	Shader PointShader("./src/PointVertex.vertexshader", "./src/PointFragment.fragmentshader");
-//	Shader FocalShader("./src/FocalVertex.vertexshader", "./src/FocalFragment.fragmentshader");
 	Shader generalLight("./src/VertexShaderPhongTexture.vs", "./src/FragmentShaderPhongTexture.fs");
 
 	int width, height;
@@ -96,10 +91,10 @@ int main() {
 	Material material("./src/difuso.png", "./src/especular.png", 32.0);
 	
 	Object cubA({ 0.3f,0.3f,0.3f }, { 0.f,0.f,0.0f }, { 0.f,-2.f,0.0f }, Object::cube);
-	Object cubB({ 0.1,0.1,0.1 }, { 0.f,0.f,0.0f }, { 0.f,0.3f,0.0f }, Object::cube);
-	Object cubC({ 0.1,0.1,0.1 }, { 0.f,0.f,0.0f }, { 1.5f,0.3f,0.0f }, Object::cube);
-	Object cubD({ 0.1,0.1,0.1 }, { 0.f,0.f,0.0f }, { 3.f,0.3f,0.0f }, Object::cube);
-	Object cubE({ 0.1,0.1,0.1 }, { 0.f,0.f,0.0f }, { 4.5f,0.3f,0.0f }, Object::cube);
+	Object cubB({ 0.1,0.1,0.1 }, { 0.f,1.f,0.0f }, { 0.f,0.3f,0.0f }, Object::cube);
+	Object cubC({ 0.1,0.1,0.1 }, { 1.f,0.f,0.0f }, { 1.5f,0.3f,0.0f }, Object::cube);
+	Object cubD({ 0.1,0.1,0.1 }, { 0.f,1.f,0.0f }, { 3.f,0.3f,0.0f }, Object::cube);
+	Object cubE({ 0.1,0.1,0.1 }, { 0.f,0.f,1.0f }, { 4.5f,0.3f,0.0f }, Object::cube);
 
 	material.SetMaterial(&generalLight);
 	material.SetMaterial(&generalLight);
@@ -119,57 +114,18 @@ int main() {
 		GLint lightPosLoc, viewPosLoc,lightDirPos;
 		mat4 proj;		mat4 view;		mat4 model;
 		GLint modelLoc, viewLoc, projectionLoc;
-//////////////////////////////////////////////////LIGHTS-DIRECCIONAL///////////////////////////////////////////////////
-		//pulsar key 5
-//		Light Ldireccion({ -0.2f, -1.0f, -0.3f }, { -0.2f, -1.0f, -0.3f }, { 0.2f, 0.2f, 0.2f }, { 0.5f, 0.5f, 0.5f }, { 1.0f, 1.0f, 1.0f },Light::DIRECTIONAL,0);
-/*
-		if (LightOption ==1){
-			DireccionShader.USE();
-			material.SetShininess(&DireccionShader);
-			material.ActivateTextures();
-			lightPosLoc = glGetUniformLocation(DireccionShader.Program, "lightPos");
-			viewPosLoc = glGetUniformLocation(DireccionShader.Program, "viewPos");
 
-			//direccional
-			lightDirPos = glGetUniformLocation(DireccionShader.Program, "material.Ldirection");
-			glUniform3f(lightDirPos, -0.2f, -1.0f, -0.3f);
-			glUniform3f(lightPosLoc, cubB.GetPosition().x, cubB.GetPosition().y, cubB.GetPosition().z);
-			glUniform3f(viewPosLoc, myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z);
-		
-			proj = perspective(radians(myCamera.GetFOV()), (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
-			myCamera.DoMovement(window);
-			view = myCamera.LookAt();
-
-			// Set lights properties
-			glUniform3f(glGetUniformLocation(DireccionShader.Program, "material.Lambient"), 0.2f, 0.2f, 0.2f);
-			glUniform3f(glGetUniformLocation(DireccionShader.Program, "material.Ldiffuse"), 0.5f, 0.5f, 0.5f);
-			glUniform3f(glGetUniformLocation(DireccionShader.Program, "material.Lspecular"), 1.0f, 1.0f, 1.0f);
-
-			cubA.Rotate(radiansX, radiansY);
-			cubA.Move(movement);
-			model = glm::translate(model, cubA.GetPosition());
-			model = cubA.GetModelMatrix();
-		
-			modelLoc = glGetUniformLocation(DireccionShader.Program,"model");	
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-			viewLoc = glGetUniformLocation(DireccionShader.Program, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-			projectionLoc = glGetUniformLocation(DireccionShader.Program, "projection");
-			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(proj));
-
-			//pintar el VAO
-			cubA.Draw();
-		}*/
-//////////////////////////////////////////////////LIGHTS-PUNTUAL///////////////////////////////////////////////////.
-		//pulsar key 6
 		generalLight.USE();
 		material.SetShininess(&generalLight);
 		material.ActivateTextures();
 		//Puntual
-		//glUniform3f(lightPosLoc, cubB.GetPosition().x, cubB.GetPosition().y, cubB.GetPosition().z);
 		proj = perspective(radians(myCamera.GetFOV()), (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
 		myCamera.DoMovement(window);
 		view = myCamera.LookAt();
+//DURECCIONAL
+		Light Ldir({0.0,0.0,0.0}, { -0.2f, -1.0f, -0.3f }, { 0.2f, 0.2f, 0.2f }, { 0.5f, 0.5f, 0.5f }, { 1.0f, 1.0f, 1.0f }, Light::DIRECTIONAL, 0);
+		Ldir.SetLight(&generalLight, { myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z });
+		
 //PUNTUAL
 		Light Lpoint1({ cubB.GetPosition().x, cubB.GetPosition().y, cubB.GetPosition().z }, { 0.f, 0.f, 0.f, }, { 0.2f, 0.2f, 0.2f }, { 0.5f, 0.5f, 0.5f }, { 1.0f, 1.0f, 1.0f }, Light::POINT, 0);
 		Lpoint1.SetAtt(1.0f, 0.09, 0.032);
@@ -181,7 +137,7 @@ int main() {
 		Lpoint2.SetLight(&generalLight, { myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z });
 		Lpoint2.SetPosition({ cubD.GetPosition().x, cubD.GetPosition().y, cubD.GetPosition().z });
 
-//fOCAL
+//FOCAL
 		Light LFocal1({ cubC.GetPosition().x, cubC.GetPosition().y, cubC.GetPosition().z }, { 0.f, -1.f, 0.f, }, { 0.2f, 0.0f, 0.0f }, { 0.5f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, Light::SPOT, 0);
 		LFocal1.SetAtt(1.0f, 0.09, 0.032);
 		LFocal1.SetAperture(glm::cos(glm::radians(15.5f)), glm::cos(glm::radians(30.5f)));
@@ -210,104 +166,11 @@ int main() {
 
 		//pintar el VAO
 		cubA.Draw();
-//		vec3 color = Lpoint.GetColor();
-/*		
-		if (LightOption == 2) {
-			PointShader.USE();
-			material.SetShininess(&PointShader);
-			material.ActivateTextures();
-			lightPosLoc = glGetUniformLocation(PointShader.Program, "lightPos");
-			viewPosLoc = glGetUniformLocation(PointShader.Program, "viewPos");
-
-			//Puntual
-			glUniform3f(lightPosLoc, cubB.GetPosition().x, cubB.GetPosition().y, cubB.GetPosition().z);
-			glUniform3f(viewPosLoc, myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z);
-
-			proj = perspective(radians(myCamera.GetFOV()), (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
-			myCamera.DoMovement(window);
-			view = myCamera.LookAt();
-
-			// Set lights properties
-			glUniform3f(glGetUniformLocation(PointShader.Program, "material.Lambient"), 0.2f, 0.2f, 0.2f);
-			glUniform3f(glGetUniformLocation(PointShader.Program, "material.Ldiffuse"), 0.5f, 0.5f, 0.5f);
-			glUniform3f(glGetUniformLocation(PointShader.Program, "material.Lspecular"), 1.0f, 1.0f, 1.0f);
-			glUniform1f(glGetUniformLocation(PointShader.Program, "material.Lconstant"), 1.0f);
-			glUniform1f(glGetUniformLocation(PointShader.Program, "material.Llinear"), 0.09);
-			glUniform1f(glGetUniformLocation(PointShader.Program, "material.Lquadratic"), 0.032);
-
-			cubA.Rotate(radiansX, radiansY);
-			cubA.Move(movement);
-			model = glm::translate(model, cubA.GetPosition());
-			model = cubA.GetModelMatrix();
-
-			modelLoc = glGetUniformLocation(PointShader.Program, "model");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-			viewLoc = glGetUniformLocation(PointShader.Program, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-			projectionLoc = glGetUniformLocation(PointShader.Program, "projection");
-			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(proj));
-
-			//pintar el VAO
-			cubA.Draw();
-		}*/
-//////////////////////////////////////////////////LIGHTS-FOCAL///////////////////////////////////////////////////
-		//pulsar key 7
-/*		if (LightOption == 3) {
-			FocalShader.USE();
-			material.SetShininess(&FocalShader);
-			material.ActivateTextures();
-			lightPosLoc = glGetUniformLocation(FocalShader.Program, "lightPos");
-			viewPosLoc = glGetUniformLocation(FocalShader.Program, "viewPos");
-			lightDirPos = glGetUniformLocation(FocalShader.Program, "material.Ldirection");
-			GLint lightSpotCutOffLoc = glGetUniformLocation(FocalShader.Program, "material.LcutOff");
-			GLint lightSpotOuterCutOffLoc = glGetUniformLocation(FocalShader.Program, "material.LouterCutOff");
-			
-			glUniform1f(lightSpotCutOffLoc, glm::cos(glm::radians(45.5f)));
-			glUniform1f(lightSpotOuterCutOffLoc, glm::cos(glm::radians(60.5f)));
-			//glUniform3f(lightDirPos, myCamera.cameraFront.x, myCamera.cameraFront.y, myCamera.cameraFront.z);
-			glUniform3f(lightDirPos, 0, -1, 0);
-
-			//Puntual
-			glUniform3f(lightPosLoc, cubB.GetPosition().x, cubB.GetPosition().y, cubB.GetPosition().z);
-			glUniform3f(viewPosLoc, myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z);
-
-			proj = perspective(radians(myCamera.GetFOV()), (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
-			myCamera.DoMovement(window);
-			view = myCamera.LookAt();
-
-			// Set lights properties
-			glUniform3f(glGetUniformLocation(FocalShader.Program, "material.Lambient"), 0.1f, 0.1f, 0.1f);
-			glUniform3f(glGetUniformLocation(FocalShader.Program, "material.Ldiffuse"), 0.8f, 0.8f, 0.8f);
-			glUniform3f(glGetUniformLocation(FocalShader.Program, "material.Lspecular"), 1.0f, 1.0f, 1.0f);
-			glUniform1f(glGetUniformLocation(FocalShader.Program, "material.Lconstant"), 1.0f);
-			glUniform1f(glGetUniformLocation(FocalShader.Program, "material.Llinear"), 0.09);
-			glUniform1f(glGetUniformLocation(FocalShader.Program, "material.Lquadratic"), 0.032);
-
-			cubA.Rotate(radiansX, radiansY);
-			cubA.Move(movement);
-			model = glm::translate(model, cubA.GetPosition());
-			model = cubA.GetModelMatrix();
-
-			modelLoc = glGetUniformLocation(FocalShader.Program, "model");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-			viewLoc = glGetUniformLocation(FocalShader.Program, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-			projectionLoc = glGetUniformLocation(FocalShader.Program, "projection");
-			glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(proj));
-
-			//pintar el VAO
-			cubA.Draw();
-		}*/
-
-////////////////////////////////////////////////ReceiveCub///////////////////////////////////////////////////////
+////////////////////////////////////////////////LightsCub///////////////////////////////////////////////////////
 		ReceiveShader.USE();
-
-		//cubB.Rotate(0, 0);
-		//cubB.Move({0.0f,0.50f,0.0f});
 
 		model = glm::translate(model, cubB.GetPosition());
 		model = cubB.GetModelMatrix();
-		
 		
 		modelLoc = glGetUniformLocation(ReceiveShader.Program, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
