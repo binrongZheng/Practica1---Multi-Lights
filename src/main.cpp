@@ -122,8 +122,8 @@ int main() {
 		proj = perspective(radians(myCamera.GetFOV()), (float)WIDTH / (float)HEIGHT, 0.1f, 100.f);
 		myCamera.DoMovement(window);
 		view = myCamera.LookAt();
-//DURECCIONAL
-		Light Ldir({0.0,0.0,0.0}, { -0.2f, -1.0f, -0.3f }, { 0.2f, 0.2f, 0.2f }, { 0.5f, 0.5f, 0.5f }, { 1.0f, 1.0f, 1.0f }, Light::DIRECTIONAL, 0);
+//DURECCIONAL/////
+		Light Ldir({0.0,0.0,0.0}, { -0.f, -1.0f, -0.f }, { 0.f, 0.2f, 0.f }, { 0.f, 0.5f, 0.f }, { 0.0f, 1.0f, 0.0f }, Light::DIRECTIONAL, 0);
 		Ldir.SetLight(&generalLight, { myCamera.cameraPos.x, myCamera.cameraPos.y, myCamera.cameraPos.z });
 		
 //PUNTUAL
