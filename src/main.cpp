@@ -15,7 +15,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-
+//midmaping
 using namespace glm;
 using namespace std;
 const GLint WIDTH = 800, HEIGHT = 800;
@@ -216,6 +216,7 @@ int main() {
 	cubB.Delete();
 	cubC.Delete();
 	cubD.Delete();
+	material.~Material();
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	exit(EXIT_SUCCESS);
 }
